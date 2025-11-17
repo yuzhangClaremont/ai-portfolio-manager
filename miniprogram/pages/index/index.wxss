@@ -21,12 +21,44 @@
   margin-bottom: 80rpx;
 }
 
-.logo {
+.logo-wrapper {
+  margin-bottom: 30rpx;
+}
+
+.bull-logo {
   width: 120rpx;
   height: 120rpx;
+  background: linear-gradient(135deg, #FF4757 0%, #FF6B7A 100%);
   border-radius: 60rpx;
-  margin-bottom: 30rpx;
-  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 8rpx 24rpx rgba(255, 71, 87, 0.3);
+}
+
+.logo-text {
+  font-size: 60rpx;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+
+.logo-horn {
+  position: absolute;
+  font-size: 24rpx;
+  top: 15rpx;
+  transform: rotate(0deg);
+}
+
+.logo-horn.left {
+  left: 20rpx;
+  transform: rotate(-25deg);
+}
+
+.logo-horn.right {
+  right: 20rpx;
+  transform: rotate(25deg);
 }
 
 .app-name {
@@ -62,11 +94,22 @@
   border-radius: 24rpx;
   backdrop-filter: blur(10rpx);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .feature-item:active {
   background: rgba(255, 255, 255, 0.25);
   transform: scale(0.98);
+}
+
+.feature-item:first-child {
+  border: 2rpx solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4rpx 16rpx rgba(255, 71, 87, 0.2);
+}
+
+.feature-item:first-child:active {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6rpx 20rpx rgba(255, 71, 87, 0.3);
 }
 
 .icon-placeholder {

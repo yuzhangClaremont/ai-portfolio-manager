@@ -1,0 +1,37 @@
+.logo-container {
+  width: 120rpx;
+  height: 120rpx;
+  background: linear-gradient(135deg, #FF4757 0%, #FF6B7A 100%);
+  border-radius: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(255, 71, 87, 0.3);
+  position: relative;
+}
+
+.logo-text {
+  font-size: 48rpx;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+  letter-spacing: -2rpx;
+}
+
+.logo-horn {
+  position: absolute;
+  top: 20rpx;
+  font-size: 20rpx;
+  color: white;
+  opacity: 0.8;
+}
+
+.logo-horn.left {
+  left: 25rpx;
+  transform: rotate(-30deg);
+}
+
+.logo-horn.right {
+  right: 25rpx;
+  transform: rotate(30deg);
+}

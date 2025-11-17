@@ -1,14 +1,20 @@
 <view class="container">
   <!-- Welcome Screen -->
   <view class="welcome-section">
-    <view class="logo-container">
-      <image class="logo" src="/miniprogram/images/logo.png" mode="aspectFit" />
+      <view class="logo-container">
+      <view class="logo-wrapper">
+        <view class="bull-logo">
+          <view class="logo-horn left">🐂</view>
+          <text class="logo-text">牛</text>
+          <view class="logo-horn right">🐂</view>
+        </view>
+      </view>
       <text class="app-name">AI问财</text>
       <text class="app-subtitle">AI Portfolio Manager</text>
     </view>
     
     <view class="features">
-      <view class="feature-item">
+      <view class="feature-item" bindtap="navigateToChat">
         <view class="icon-placeholder">💬</view>
         <text class="feature-text">AI聊天助手</text>
       </view>
