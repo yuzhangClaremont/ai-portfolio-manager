@@ -1,0 +1,25 @@
+<view class="container">
+  <!-- Welcome Screen -->
+  <view class="welcome-section">
+    <view class="logo-container">
+      <image class="logo" src="/miniprogram/images/logo.png" mode="aspectFit" />
+      <text class="app-name">AI问财</text>
+      <text class="app-subtitle">AI Portfolio Manager</text>
+    </view>
+    
+    <view class="features">
+      <view class="feature-item">
+        <view class="icon-placeholder">💬</view>
+        <text class="feature-text">AI聊天助手</text>
+      </view>
+      <view class="feature-item">
+        <view class="icon-placeholder">📊</view>
+        <text class="feature-text">投资组合管理</text>
+      </view>
+      <view class="feature-item">
+        <view class="icon-placeholder">👤</view>
+        <text class="feature-text">个人中心</text>
+      </view>
+    </view>
+  </view>
+</view>

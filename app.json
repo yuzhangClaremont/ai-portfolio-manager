@@ -1,0 +1,50 @@
+{
+  "pages": [
+    "miniprogram/pages/index/index",
+    "miniprogram/pages/chat/chat",
+    "miniprogram/pages/chatbot/chatbot",
+    "miniprogram/pages/portfolio/portfolio",
+    "miniprogram/pages/profile/profile"
+  ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationStyle": "custom",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "AI Portfolio Manager"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#FF4757",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "miniprogram/pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "miniprogram/pages/chat/chat",
+        "text": "AI聊天"
+      },
+      {
+        "pagePath": "miniprogram/pages/portfolio/portfolio",
+        "text": "投资组合"
+      },
+      {
+        "pagePath": "miniprogram/pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true,
+      "disableABTest": true,
+      "sdkVersionBegin": "3.0.0",
+      "sdkVersionEnd": "15.255.255"
+    }
+  },
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -1,0 +1,121 @@
+<view class="chat-container">
+  <!-- Header -->
+  <view class="chat-header">
+    <view class="header-content">
+      <view class="header-icon">💬</view>
+      <text class="header-title">AI Assistant</text>
+      <view class="status-dot"></view>
+    </view>
+  </view>
+
+  <!-- Messages Container -->
+  <scroll-view 
+    class="messages-container" 
+    scroll-y 
+    scroll-top="{{scrollTop}}"
+    scroll-into-view="{{toView}}"
+    scroll-with-animation
+  >
+    <!-- Welcome Message -->
+    <view class="message-wrapper ai-message" wx:if="{{messages.length === 0}}">
+      <view class="avatar ai-avatar">
+        <view class="avatar-icon">🤖</view>
+      </view>
+      <view class="message-bubble ai-bubble">
+        <text class="message-text">👋 Hi! I'm your AI assistant. How can I help you today?</text>
+      </view>
+    </view>
+
+    <!-- Messages List -->
+    <view class="message-wrapper {{item.type}}-message" 
+          wx:for="{{messages}}" 
+          wx:key="id" 
+          id="msg-{{item.id}}">
+      
+      <!-- AI Message -->
+      <block wx:if="{{item.type === 'ai'}}">
+        <view class="avatar ai-avatar">
+          <view class="avatar-icon">🤖</view>
+        </view>
+        <view class="message-bubble ai-bubble">
+          <text class="message-text">{{item.content}}</text>
+          <text class="message-time">{{item.time}}</text>
+        </view>
+      </block>
+
+      <!-- User Message -->
+      <block wx:else>
+        <view class="message-bubble user-bubble">
+          <text class="message-text">{{item.content}}</text>
+          <text class="message-time">{{item.time}}</text>
+        </view>
+        <view class="avatar user-avatar">
+          <view class="avatar-icon">👤</view>
+        </view>
+      </block>
+    </view>
+
+    <!-- Typing Indicator -->
+    <view class="message-wrapper ai-message" wx:if="{{isTyping}}">
+      <view class="avatar ai-avatar">
+        <view class="avatar-icon">🤖</view>
+      </view>
+      <view class="message-bubble ai-bubble typing-bubble">
+        <view class="typing-indicator">
+          <view class="dot"></view>
+          <view class="dot"></view>
+          <view class="dot"></view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Input Area -->
+  <view class="input-area">
+    <view class="input-container">
+      <input 
+        class="message-input"
+        placeholder="Type your message..."
+        value="{{inputText}}"
+        bindinput="onInputChange"
+        bindconfirm="onSendMessage"
+        maxlength="500"
+        disabled="{{isLoading}}"
+      />
+      <button 
+        class="send-button"
+        bindtap="onSendMessage"
+        disabled="{{!inputText.trim() || isLoading}}"
+        loading="{{isLoading}}"
+      >
+        <text wx:if="{{!isLoading}}">Send</text>
+        <text wx:else>⏳</text>
+      </button>
+    </view>
+    
+    <!-- Quick Actions -->
+    <view class="quick-actions" wx:if="{{messages.length === 0}}">
+      <button 
+        class="quick-action-btn"
+        bindtap="onQuickQuestion"
+        data-question="What can you help me with?"
+      >
+        What can you help me with?
+      </button>
+      <button 
+        class="quick-action-btn"
+        bindtap="onQuickQuestion"
+        data-question="Tell me a joke"
+      >
+        Tell me a joke
+      </button>
+      <button 
+        class="quick-action-btn"
+        bindtap="onQuickQuestion"
+        data-question="Help me write code"
+      >
+        Help me write code
+      </button>
+    </view>
+  </view>
+</view>

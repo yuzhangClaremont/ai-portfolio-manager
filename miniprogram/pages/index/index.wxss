@@ -1,0 +1,85 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FF4757 0%, #FF6B7A 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 40rpx;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80rpx;
+}
+
+.logo {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 60rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.2);
+}
+
+.app-name {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 16rpx;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+}
+
+.app-subtitle {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 60rpx;
+  text-transform: uppercase;
+  letter-spacing: 2rpx;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 40rpx;
+  width: 100%;
+  max-width: 500rpx;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 30rpx;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 30rpx;
+  border-radius: 24rpx;
+  backdrop-filter: blur(10rpx);
+  transition: all 0.3s ease;
+}
+
+.feature-item:active {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(0.98);
+}
+
+.icon-placeholder {
+  font-size: 32rpx;
+  width: 32rpx;
+  height: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-text {
+  font-size: 32rpx;
+  color: white;
+  font-weight: 500;
+}
