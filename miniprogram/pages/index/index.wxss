@@ -3,6 +3,9 @@
   background: linear-gradient(135deg, #FF4757 0%, #FF6B7A 100%);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .welcome-section {
@@ -12,13 +15,18 @@
   align-items: center;
   justify-content: center;
   padding: 60rpx 40rpx;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .logo-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin-bottom: 80rpx;
+  text-align: center;
 }
 
 .logo-wrapper {
@@ -67,6 +75,9 @@
   color: white;
   margin-bottom: 16rpx;
   text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 
 .app-subtitle {
