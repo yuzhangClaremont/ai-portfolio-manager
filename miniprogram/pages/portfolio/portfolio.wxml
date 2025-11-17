@@ -1,0 +1,113 @@
+<view class="profile-setting">
+  <!-- 头像上传区域 -->
+  <view class="avatar-section">
+    <view class="avatar-label">头像</view>
+    <view class="avatar-upload">
+      <t-avatar
+        size="120rpx"
+        image="{{userInfo.avatar}}"
+        bind:click="onAvatarClick"
+      />
+      <view class="avatar-hint">点击更换头像</view>
+    </view>
+  </view>
+
+  <!-- 个人信息表单 -->
+  <t-cell-group>
+    <t-cell
+      title="昵称"
+      arrow
+      bind:click="onNicknameClick"
+    >
+      <view slot="brief">{{userInfo.nickname || '未设置'}}</view>
+    </t-cell>
+    
+    <t-cell
+      title="手机号"
+      arrow
+      bind:click="onPhoneClick"
+    >
+      <view slot="brief">{{userInfo.phone || '未绑定'}}</view>
+    </t-cell>
+  </t-cell-group>
+
+  <!-- 保存按钮 -->
+  <view class="save-button">
+    <t-button
+      theme="primary"
+      size="large"
+      bind:click="onSave"
+    >
+      保存修改
+    </t-button>
+  </view>
+
+  <!-- 头像选择弹窗 -->
+  <t-popup
+    visible="{{showAvatarPopup}}"
+    placement="bottom"
+    bind:visible-change="onAvatarPopupVisibleChange"
+  >
+    <view class="avatar-popup">
+      <view class="popup-title">选择头像</view>
+      <view class="avatar-options">
+        <view class="avatar-option" bind:tap="onChooseFromAlbum">
+          <view class="option-icon">📷</view>
+          <view class="option-text">从相册选择</view>
+        </view>
+        <view class="avatar-option" bind:tap="onTakePhoto">
+          <view class="option-icon">📸</view>
+          <view class="option-text">拍照</view>
+        </view>
+      </view>
+      <view class="popup-cancel" bind:tap="onCancelAvatar">取消</view>
+    </view>
+  </t-popup>
+
+  <!-- 昵称编辑弹窗 -->
+  <t-popup
+    visible="{{showNicknamePopup}}"
+    placement="bottom"
+    bind:visible-change="onNicknamePopupVisibleChange"
+  >
+    <view class="nickname-popup">
+      <view class="popup-title">编辑昵称</view>
+      <view class="input-section">
+        <t-input
+          value="{{nicknameInput}}"
+          placeholder="请输入昵称"
+          maxlength="20"
+          bind:change="onNicknameInputChange"
+        />
+      </view>
+      <view class="popup-actions">
+        <view class="popup-cancel" bind:tap="onCancelNickname">取消</view>
+        <view class="popup-confirm" bind:tap="onConfirmNickname">确定</view>
+      </view>
+    </view>
+  </t-popup>
+
+  <!-- 手机号编辑弹窗 -->
+  <t-popup
+    visible="{{showPhonePopup}}"
+    placement="bottom"
+    bind:visible-change="onPhonePopupVisibleChange"
+  >
+    <view class="phone-popup">
+      <view class="popup-title">绑定手机号</view>
+      <view class="input-section">
+        <t-input
+          value="{{phoneInput}}"
+          placeholder="请输入手机号"
+          type="number"
+          maxlength="11"
+          bind:change="onPhoneInputChange"
+        />
+      </view>
+      <view class="popup-actions">
+        <view class="popup-cancel" bind:tap="onCancelPhone">取消</view>
+        <view class="popup-confirm" bind:tap="onConfirmPhone">确定</view>
+      </view>
+    </view>
+  </t-popup>
+</view>

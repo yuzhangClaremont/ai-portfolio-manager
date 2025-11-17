@@ -1,0 +1,153 @@
+<!-- AI金融助手页面 -->
+<view class="chatbot-container">
+  <!-- 导航栏 -->
+  <t-navbar
+    title="AI金融助手"
+    background="#ffffff"
+    color="#333333"
+    left-icon=""
+  >
+    <view slot="right">
+      <t-icon name="setting" bind:tap="onSettingsClick" />
+    </view>
+  </t-navbar>
+
+  <!-- 聊天消息区域 -->
+  <scroll-view 
+    class="chat-messages" 
+    scroll-y="true" 
+    scroll-top="{{scrollTop}}"
+    scroll-with-animation="true"
+  >
+    <view class="messages-container">
+      <!-- 欢迎消息 -->
+      <view class="message-item assistant-message" wx:if="{{messages.length === 0}}">
+        <t-avatar class="message-avatar" size="medium" image="/images/ai-avatar.png"></t-avatar>
+        <view class="message-content">
+          <view class="message-bubble">
+            <text class="message-text">您好！我是您的AI金融助手，可以为您提供：</text>
+            <view class="welcome-features">
+              <t-cell-group>
+                <t-cell title="投资组合分析" arrow></t-cell>
+                <t-cell title="市场趋势解读" arrow></t-cell>
+                <t-cell title="风险评估建议" arrow></t-cell>
+                <t-cell title="个性化投资策略" arrow></t-cell>
+              </t-cell-group>
+            </view>
+            <text class="message-text">请告诉我您想了解什么？</text>
+          </view>
+          <text class="message-time">{{formatTime(currentTime)}}</text>
+        </view>
+      </view>
+
+      <!-- 消息列表 -->
+      <view 
+        class="message-item {{item.type === 'user' ? 'user-message' : 'assistant-message'}}" 
+        wx:for="{{messages}}" 
+        wx:key="id"
+      >
+        <t-avatar 
+          class="message-avatar" 
+          size="medium" 
+          image="{{item.type === 'user' ? '/images/user-avatar.png' : '/images/ai-avatar.png'}}"
+        ></t-avatar>
+        <view class="message-content">
+          <view class="message-bubble">
+            <text class="message-text">{{item.content}}</text>
+            <t-loading wx:if="{{item.loading}}" class="message-loading" />
+          </view>
+          <text class="message-time">{{formatTime(item.timestamp)}}</text>
+        </view>
+      </view>
+
+      <!-- 输入区域 -->
+      <view class="input-section">
+        <view class="input-container">
+          <t-input
+            class="message-input"
+            value="{{userInput}}"
+            placeholder="请输入您的问题..."
+            maxlength="500"
+            bind:input="onInputChange"
+            bind:confirm="onSendMessage"
+          >
+            <view slot="suffix">
+              <t-button 
+                class="send-button"
+                theme="primary" 
+                size="small"
+                disabled="{{!userInput.trim() || isSending}}"
+                bind:click="onSendMessage"
+              >
+                <t-icon name="send" wx:if="{{!isSending}}" />
+                <t-loading wx:else size="16" />
+              </t-button>
+            </view>
+          </t-input>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 设置弹窗 -->
+  <t-popup
+    visible="{{showSettingsPopup}}"
+    placement="bottom"
+    bind:visible-change="onSettingsPopupChange"
+  >
+    <view class="settings-popup">
+      <view class="popup-header">
+        <text class="popup-title">AI助手设置</text>
+        <t-icon name="close" bind:tap="onCloseSettings" />
+      </view>
+      
+      <view class="popup-content">
+        <t-cell-group>
+          <t-cell title="Coze API配置" arrow bind:tap="onCozeConfigClick">
+            <view slot="brief">
+              <text class="config-status {{cozeConfig.apiKey ? 'configured' : 'not-configured'}}">
+                {{cozeConfig.apiKey ? '已配置' : '未配置'}}
+              </text>
+            </view>
+          </t-cell>
+          <t-cell title="清除聊天记录" arrow bind:tap="onClearChatClick" />
+          <t-cell title="使用说明" arrow bind:tap="onHelpClick" />
+        </t-cell-group>
+      </view>
+    </view>
+  </t-popup>
+
+  <!-- 配置弹窗 -->
+  <t-popup
+    visible="{{showConfigPopup}}"
+    placement="bottom"
+    bind:visible-change="onConfigPopupChange"
+  >
+    <view class="config-popup">
+      <view class="popup-header">
+        <text class="popup-title">Coze API配置</text>
+        <t-icon name="close" bind:tap="onCloseConfig" />
+      </view>
+      
+      <view class="popup-content">
+        <t-input
+          label="API Key"
+          value="{{cozeConfig.apiKey}}"
+          placeholder="请输入Coze API Key"
+          bind:input="onApiKeyChange"
+          type="password"
+        />
+        <t-input
+          label="Agent ID"
+          value="{{cozeConfig.agentId}}"
+          placeholder="请输入Agent ID"
+          bind:input="onAgentIdChange"
+        />
+        <view class="config-actions">
+          <t-button theme="primary" bind:click="onSaveConfig">保存配置</t-button>
+          <t-button bind:click="onCloseConfig">取消</t-button>
+        </view>
+      </view>
+    </view>
+  </t-popup>
+</view>

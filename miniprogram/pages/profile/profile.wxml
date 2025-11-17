@@ -1,0 +1,84 @@
+<!-- 个人中心页面 -->
+<view class="profile">
+  <!-- 已登录状态 -->
+  <block wx:if="{{isLoggedIn}}">
+    <view class="user-section">
+      <view class="user-info">
+        <t-avatar
+          class="user-avatar"
+          size="120rpx"
+          image="{{userInfo.avatar}}"
+        />
+        <view class="user-details">
+          <text class="user-name">{{userInfo.nickname}}</text>
+          <text class="user-phone">{{userInfo.phone || '未绑定手机号'}}</text>
+        </view>
+        <button class="edit-button" bind:tap="onEditProfile">编辑</button>
+      </view>
+      
+      <view class="action-buttons">
+        <t-button
+          class="logout-button"
+          theme="default"
+          size="large"
+          bind:click="onLogout"
+        >
+          退出登录
+        </t-button>
+      </view>
+    </view>
+  </block>
+
+  <!-- 未登录状态 -->
+  <block wx:else>
+    <view class="login-section">
+      <text class="login-title">欢迎使用AI试衣</text>
+      <text class="login-subtitle">登录后可以保存您的试衣记录</text>
+      <t-button
+        class="login-button"
+        theme="primary"
+        size="large"
+        bind:click="onLogin"
+      >
+        立即登录
+      </t-button>
+    </view>
+  </block>
+
+  <!-- 保存的试衣图片 -->
+  <view class="saved-images-section">
+    <text class="section-title">我的试衣记录</text>
+    
+    <block wx:if="{{savedImages.length > 0}}">
+      <view class="images-grid">
+        <block wx:for="{{savedImages}}" wx:key="id">
+          <view class="image-item" bind:tap="onViewImageDetail" data-index="{{index}}">
+            <t-image
+              class="image"
+              src="{{item.url}}"
+              mode="aspectFill"
+            />
+            <view class="image-overlay">
+              <button class="delete-button" bind:tap="onDeleteImage" data-index="{{index}}">删除</button>
+            </view>
+            <view class="image-info">
+              <text class="image-title">{{item.title}}</text>
+              <text class="image-time">{{item.createTime}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </block>
+    
+    <block wx:else>
+      <view class="empty-state">
+        <view class="empty-icon">📸</view>
+        <text class="empty-text">暂无试衣记录</text>
+        <text class="empty-tip">去AI试衣页面创建您的第一个试衣效果吧！</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- 底部导航栏 -->
+  <custom-tab-bar />
+</view>
