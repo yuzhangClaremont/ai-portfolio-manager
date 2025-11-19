@@ -51,36 +51,68 @@ Page({
       toView: `msg-${userMessage.id}`
     })
 
-    // Simulate AI response
-    this.simulateAIResponse(userMessage.content)
+    // Call AI response
+    this.callAIAPI(userMessage.content)
   },
 
-  // Simulate AI response
-  simulateAIResponse(userQuestion) {
-    setTimeout(() => {
-      const responses = [
-        "That's an interesting question! Let me help you with that.",
-        "I understand what you're asking. Here's what I think...",
-        "Great question! Based on my analysis, I would suggest...",
-        "Thanks for asking! I can help you with that by...",
-        "Let me provide you with some insights on that topic."
-      ]
+  // Call AI API
+  async callAIAPI(userMessage) {
+    try {
+      // Get message history for context (last 10 messages)
+      const recentMessages = this.data.messages.slice(-10);
+      
+      const response = await wx.request({
+        url: 'http://localhost:8000/api/chat',
+        method: 'POST',
+        header: {
+          'content-type': 'application/json'
+        },
+        data: {
+          message: userMessage,
+          messageHistory: recentMessages
+        }
+      });
 
-      const aiMessage = {
-        id: this.data.messageId++,
-        type: 'ai',
-        content: responses[Math.floor(Math.random() * responses.length)],
-        time: this.formatTime(new Date())
+      console.log('AI Response:', response.data);
+
+      if (response.data.success) {
+        const aiMessage = {
+          id: this.data.messageId++,
+          type: 'ai',
+          content: response.data.response,
+          time: this.formatTime(new Date())
+        };
+
+        this.setData({
+          messages: [...this.data.messages, aiMessage],
+          isLoading: false,
+          isTyping: false,
+          scrollTop: 999999,
+          toView: `msg-${aiMessage.id}`
+        });
+      } else {
+        throw new Error(response.data.error || 'AI response failed');
       }
 
+    } catch (error) {
+      console.error('AI API Error:', error);
+      
+      // Fallback response
+      const fallbackMessage = {
+        id: this.data.messageId++,
+        type: 'ai',
+        content: '抱歉，我现在无法连接到AI服务。请检查网络连接或稍后再试。',
+        time: this.formatTime(new Date())
+      };
+
       this.setData({
-        messages: [...this.data.messages, aiMessage],
+        messages: [...this.data.messages, fallbackMessage],
         isLoading: false,
         isTyping: false,
         scrollTop: 999999,
-        toView: `msg-${aiMessage.id}`
-      })
-    }, 1500)
+        toView: `msg-${fallbackMessage.id}`
+      });
+    }
   },
 
   // Quick question handler
