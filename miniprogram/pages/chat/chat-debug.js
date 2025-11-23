@@ -56,11 +56,11 @@ Page({
     })
 
     console.log('UI updated, calling API...')
-    this.callAIAPI(userMessage)
+    this.callAIAPI(userMessage.content)
   },
 
   // Debug API call
-  callAIAPI(userMessage) {
+  async callAIAPI(userMessage) {
     console.log('=== API CALL START ===')
     console.log('User message:', userMessage)
     
@@ -68,73 +68,72 @@ Page({
     console.log('Recent messages for context:', recentMessages)
     
     const requestData = {
-      message: userMessage.content,
+      message: userMessage,
       messageHistory: recentMessages
     }
     console.log('Request data:', requestData)
     
-    wx.request({
-      url: 'http://192.168.1.8:8000/api/chat',
-      method: 'POST',
-      header: {
-        'content-type': 'application/json'
-      },
-      data: requestData,
-      timeout: 10000,  // 10 second timeout
-      success: (res) => {
-        console.log('=== API RESPONSE ===')
-        console.log('Response object:', res)
-        console.log('Response data:', res.data)
-        console.log('Status code:', res.statusCode)
+    try {
+      console.log('Making request to: http://localhost:8000/api/chat')
+      
+      const response = await wx.request({
+        url: 'http://localhost:8000/api/chat',
+        method: 'POST',
+        header: {
+          'content-type': 'application/json'
+        },
+        data: requestData,
+        timeout: 10000  // 10 second timeout
+      })
 
-        if (res.statusCode === 200 && res.data && res.data.success) {
-          const aiMessage = {
-            id: this.data.messageId++,
-            type: 'ai',
-            content: res.data.response,
-            time: this.formatTime(new Date())
-          }
+      console.log('=== API RESPONSE ===')
+      console.log('Response object:', response)
+      console.log('Response data:', response.data)
+      console.log('Status code:', response.statusCode)
 
-          console.log('AI message created:', aiMessage)
-
-          this.setData({
-            messages: [...this.data.messages, aiMessage],
-            isLoading: false,
-            isTyping: false,
-            scrollTop: 999999,
-            toView: `msg-${aiMessage.id}`
-          })
-        } else {
-          console.log('API returned failure:', res.data)
-          this.handleError(res.data?.error || 'AI response failed')
+      if (response.data && response.data.success) {
+        const aiMessage = {
+          id: this.data.messageId++,
+          type: 'ai',
+          content: response.data.response,
+          time: this.formatTime(new Date())
         }
-      },
-      fail: (error) => {
-        console.log('=== API ERROR ===')
-        console.log('Error object:', error)
-        console.log('Error message:', error.errMsg || error.message)
-        
-        this.handleError(`Network Error: ${error.errMsg || error.message}`)
+
+        console.log('AI message created:', aiMessage)
+
+        this.setData({
+          messages: [...this.data.messages, aiMessage],
+          isLoading: false,
+          isTyping: false,
+          scrollTop: 999999,
+          toView: `msg-${aiMessage.id}`
+        })
+      } else {
+        console.log('API returned failure:', response.data)
+        throw new Error(response.data?.error || 'AI response failed')
       }
-    })
-  },
 
-  // Helper function to handle errors consistently
-  handleError(errorMessage) {
-    const fallbackMessage = {
-      id: this.data.messageId++,
-      type: 'ai',
-      content: `API Error: ${errorMessage}`,
-      time: this.formatTime(new Date())
+    } catch (error) {
+      console.log('=== API ERROR ===')
+      console.log('Error object:', error)
+      console.log('Error message:', error.errMsg || error.message)
+      console.log('Stack trace:', error.stack)
+      
+      const fallbackMessage = {
+        id: this.data.messageId++,
+        type: 'ai',
+        content: `API Error: ${error.errMsg || error.message}`,
+        time: this.formatTime(new Date())
+      }
+
+      this.setData({
+        messages: [...this.data.messages, fallbackMessage],
+        isLoading: false,
+        isTyping: false,
+        scrollTop: 999999,
+        toView: `msg-${fallbackMessage.id}`
+      })
     }
-
-    this.setData({
-      messages: [...this.data.messages, fallbackMessage],
-      isLoading: false,
-      isTyping: false,
-      scrollTop: 999999,
-      toView: `msg-${fallbackMessage.id}`
-    })
   },
 
   formatTime(date) {
