@@ -16,7 +16,7 @@ class AgentState(TypedDict):
 
 # Initialize DeepSeek LLM
 llm = ChatOpenAI(
-    openai_api_key=os.getenv("DEEPSEEK_API_KEY"),
+    openai_api_key=os.getenv("DEEPSEEK_API_KEY"), # WITHOUT load_dotenv() - This will be None!
     model_name="deepseek-chat",
     openai_api_base="https://api.deepseek.com/v1",
     temperature=0.7,
