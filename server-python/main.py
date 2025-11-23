@@ -43,6 +43,16 @@ class HealthResponse(BaseModel):
     message: str
     timestamp: str
 
+class AuthRequest(BaseModel):
+    email: str
+    password: str
+
+class AuthResponse(BaseModel):
+    success: bool
+    message: str
+    timestamp: str
+    error: Optional[str] = None
+
 # Health check endpoint
 @app.get("/health", response_model=HealthResponse)
 async def health_check():
@@ -110,6 +120,65 @@ async def root():
         "health": "/health",
         "chat": "/api/chat"
     }
+
+# Simple in-memory user store and helpers
+USERS: Dict[str, str] = {}
+
+def hash_password(email: str, password: str) -> str:
+    import hashlib
+    return hashlib.sha256((email + "::" + password).encode("utf-8")).hexdigest()
+
+def validate_email(email: str) -> bool:
+    return "@" in email and "." in email
+
+@app.post("/api/auth/register", response_model=AuthResponse)
+async def register(request: AuthRequest):
+    try:
+        if not validate_email(request.email):
+            raise HTTPException(status_code=400, detail="邮箱格式不正确")
+        if not request.password or len(request.password) < 6:
+            raise HTTPException(status_code=400, detail="密码至少6位")
+        if request.email in USERS:
+            raise HTTPException(status_code=400, detail="邮箱已注册")
+        USERS[request.email] = hash_password(request.email, request.password)
+        return AuthResponse(
+            success=True,
+            message="注册成功",
+            timestamp=datetime.utcnow().isoformat() + "Z",
+        )
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        return AuthResponse(
+            success=False,
+            message="注册失败",
+            timestamp=datetime.utcnow().isoformat() + "Z",
+            error=str(e)
+        )
+
+@app.post("/api/auth/login", response_model=AuthResponse)
+async def login(request: AuthRequest):
+    try:
+        if not validate_email(request.email):
+            raise HTTPException(status_code=400, detail="邮箱格式不正确")
+        if request.email not in USERS:
+            raise HTTPException(status_code=400, detail="账号不存在")
+        if USERS.get(request.email) != hash_password(request.email, request.password):
+            raise HTTPException(status_code=400, detail="邮箱或密码错误")
+        return AuthResponse(
+            success=True,
+            message="登录成功",
+            timestamp=datetime.utcnow().isoformat() + "Z",
+        )
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        return AuthResponse(
+            success=False,
+            message="登录失败",
+            timestamp=datetime.utcnow().isoformat() + "Z",
+            error=str(e)
+        )
 
 # Run the app
 if __name__ == "__main__":

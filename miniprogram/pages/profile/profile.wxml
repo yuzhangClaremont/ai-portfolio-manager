@@ -1,3 +1,14 @@
 <view class="container">
-  <text>Profile Page (Coming Soon)</text>
+  <view class="auth-header">
+    <text class="auth-title">{{mode === 'login' ? '登录' : '注册'}}</text>
+  </view>
+  <view class="auth-form">
+    <input class="auth-input" placeholder="邮箱" value="{{email}}" bindinput="onEmailInput" />
+    <input class="auth-input" placeholder="密码" password value="{{password}}" bindinput="onPasswordInput" />
+    <view wx:if="{{mode === 'register'}}">
+      <input class="auth-input" placeholder="确认密码" password value="{{confirmPassword}}" bindinput="onConfirmPasswordInput" />
+    </view>
+    <button class="auth-submit" bindtap="onSubmit" disabled="{{isLoading}}" loading="{{isLoading}}">{{mode === 'login' ? '登录' : '注册'}}</button>
+    <button class="auth-switch" bindtap="onSwitchMode" disabled="{{isLoading}}">{{mode === 'login' ? '切换到注册' : '切换到登录'}}</button>
+  </view>
 </view>

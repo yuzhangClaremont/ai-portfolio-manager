@@ -1,3 +1,9 @@
-node_modules
-node_modules
-node_modules
+__pycache__/
+*.pyc
+*.pyo
+*$py.class
+server-python/venv/
+venv/
+.venv/
+env/
+.DS_Store
