@@ -80,7 +80,7 @@ Page({
         'content-type': 'application/json'
       },
       data: requestData,
-      timeout: 10000,  // 10 second timeout
+      timeout: 60000,  // 60 second timeout
       success: (res) => {
         console.log('=== API RESPONSE ===')
         console.log('Response object:', res)
